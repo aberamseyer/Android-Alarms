@@ -50,9 +50,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.fab1:
                 Log.d("aramsey", "fab 1 tapped");
+                animateFab();
                 break;
             case R.id.fab2:
                 Log.d("aramsey", "fab 2 tapped");
+                animateFab();
                 break;
         }
     }
