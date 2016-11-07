@@ -13,7 +13,7 @@ import android.widget.ListView;
  */
 
 public class AlarmListFragment extends ListFragment {
-    String[] AndroidOS = new String[] { "Alarms1","Alarm2","Alarm3","Alarm4","Alarm5","Alarm6","Alarm7","Alarm8","Alarm9" };
+    String[] alarms = new String[] { "Alarms1","Alarm2","Alarm3","Alarm4","Alarm5","Alarm6","Alarm7","Alarm8","Alarm9" };
 //    String[] Version = new String[]{"1.5","1.6","2.0-2.1","2.2","2.3","3.0-3.2","4.0","4.1-4.3","4.4"};
     @Override
 
@@ -24,7 +24,7 @@ public class AlarmListFragment extends ListFragment {
                 container, false);
         //List<?> items = new ArrayAdapter<?>();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, AndroidOS);
+                android.R.layout.simple_list_item_1, alarms);
         setListAdapter(adapter);
 
         return view;
