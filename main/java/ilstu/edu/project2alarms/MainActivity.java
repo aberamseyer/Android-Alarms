@@ -1,6 +1,7 @@
 package ilstu.edu.project2alarms;
 // Abe wrote this
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,8 @@ import android.view.animation.AnimationUtils;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab,fab1,fab2;
-    private Animation fab1_open,fab2_open,fab_close,rotate_forward,rotate_backward;
+    private FloatingActionButton fab, fab1, fab2;
+    private Animation fab1_open, fab2_open, fab_close, rotate_forward, rotate_backward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        // TODO needs to save the current list of alarms in the app to the alarms csv file
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // TODO will have same logic as onPause
+    }
+
+    @Override
     public void onClick(View v) {
         int tappedButton = v.getId();
+        Intent i;
         switch (tappedButton) {
             case R.id.fab:
                 animateFab();
@@ -51,9 +65,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.fab1:
                 Log.d("aramsey", "fab 1 tapped");
                 animateFab();
+//                i = new Intent(this,CreateAlarmActivity.class);
+//                startActivity(i);
                 break;
             case R.id.fab2:
                 Log.d("aramsey", "fab 2 tapped");
+                i = new Intent(this,CreateTimerActivity.class);
+                startActivity(i);
                 animateFab();
                 break;
         }
@@ -92,13 +110,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+//            case R.id.action_settings:
+//                openSettings();
+//                return true;
+//            case R.id.action_googleCalendar:
+//                syncWithCalendar();
+//                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

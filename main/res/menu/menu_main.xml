@@ -7,4 +7,10 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_googleCalendar"
+        android:orderInCategory="150"
+        android:title="Save to Google Calendar"
+        app:showAsAction="never" />
 </menu>

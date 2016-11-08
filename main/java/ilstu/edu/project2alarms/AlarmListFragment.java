@@ -13,10 +13,11 @@ import android.widget.ListView;
  */
 
 public class AlarmListFragment extends ListFragment {
-    String[] alarms = new String[] { "Alarms1","Alarm2","Alarm3","Alarm4","Alarm5","Alarm6","Alarm7","Alarm8","Alarm9" };
-//    String[] Version = new String[]{"1.5","1.6","2.0-2.1","2.2","2.3","3.0-3.2","4.0","4.1-4.3","4.4"};
-    @Override
+    // TODO needs to read from the alarms csv file to create a string array of .toString() alarm objects
 
+    String[] alarms = new String[] { "Alarms1","Alarm2","Alarm3","Alarm4","Alarm5","Alarm6","Alarm7","Alarm8","Alarm9" };
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
