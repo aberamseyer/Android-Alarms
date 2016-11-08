@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.fab1:
                 Log.d("aramsey", "fab 1 tapped");
                 animateFab();
-//                i = new Intent(this,CreateAlarmActivity.class);
-//                startActivity(i);
+                i = new Intent(this,CreateAlarmActivity.class);
+                startActivity(i);
                 break;
             case R.id.fab2:
                 Log.d("aramsey", "fab 2 tapped");
