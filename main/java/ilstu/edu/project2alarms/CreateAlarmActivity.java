@@ -1,11 +1,20 @@
 package ilstu.edu.project2alarms;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 /**
  * Created by Abe on 11/8/2016.
@@ -13,58 +22,101 @@ import android.widget.TimePicker;
 
 public class CreateAlarmActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TimePicker timePicker;
-    private CheckBox checkBoxSun, checkBoxMon, checkBoxTue, checkBoxWed, checkBoxThur, checkBoxFri,
-                        checkBoxSat;
-    private Button setTimerButton;
+    //private TimePicker timePicker;
+    private Button setDateButton, setTimeButton, setAlarmButton;
+    private int mYear, mMonth, mDay, mHour, mMinute;
+    private int aYear, aMonth, aDay, aHour, aMinute;
+    TextView timeText, dateText;
+    EditText alarmMessage;
+    Switch repeatSwitch;
+    String stringToWrite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_alarm);
 
-        timePicker = (TimePicker)findViewById(R.id.timePicker);
-        checkBoxSun = (CheckBox)findViewById(R.id.checkBoxSun);
-        checkBoxMon = (CheckBox)findViewById(R.id.checkBoxMon);
-        checkBoxTue = (CheckBox)findViewById(R.id.checkBoxTue);
-        checkBoxWed = (CheckBox)findViewById(R.id.checkBoxWed);
-        checkBoxThur = (CheckBox)findViewById(R.id.checkBoxThur);
-        checkBoxFri = (CheckBox)findViewById(R.id.checkBoxFri);
-        checkBoxSat = (CheckBox)findViewById(R.id.checkBoxSat);
-        setTimerButton = (Button)findViewById(R.id.setAlarmButton);
+        //timePicker = (TimePicker)findViewById(R.id.);
+        stringToWrite = "";
+        setDateButton = (Button)findViewById(R.id.setDateButton);
+        setTimeButton = (Button)findViewById(R.id.setTimeButton);
+        setAlarmButton = (Button)findViewById(R.id.setAlarmButton);
+        timeText = (TextView)findViewById(R.id.timeText);
+        dateText = (TextView)findViewById(R.id.dateText);
+        alarmMessage = (EditText)findViewById(R.id.alarmMessage);
+        repeatSwitch = (Switch)findViewById(R.id.repeatSwitch);
 
-        checkBoxSun.setOnClickListener(this);
-        checkBoxMon.setOnClickListener(this);
-        checkBoxTue.setOnClickListener(this);
-        checkBoxWed.setOnClickListener(this);
-        checkBoxThur.setOnClickListener(this);
-        checkBoxFri.setOnClickListener(this);
-        checkBoxSat.setOnClickListener(this);
-        setTimerButton.setOnClickListener(this);
+        setAlarmButton.setOnClickListener(this);
+        setTimeButton.setOnClickListener(this);
+        setDateButton.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View view) {
+        final Calendar c = Calendar.getInstance();
         switch(view.getId()) {
-            case R.id.setAlarmButton:
+            case R.id.setTimeButton:
+                // Get Current Time
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                String formatedMinute = "" + minute;
+                                if (minute < 10)
+                                    formatedMinute = "0" + minute;
+                                if(hourOfDay > 12)
+                                    timeText.setText((hourOfDay-12) + ":" + formatedMinute + " PM");
+                                else
+                                    timeText.setText(hourOfDay + ":" + formatedMinute + " AM");
+                                aHour = hourOfDay;
+                                aMinute = minute;
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
                 break;
-//            case R.id.checkBoxSun:
-//                break;
-//            case R.id.checkBoxMon:
-//                break;
-//            case R.id.checkBoxTue:
-//                break;
-//            case R.id.checkBoxWed:
-//                break;
-//            case R.id.checkBoxThur:
-//                break;
-//            case R.id.checkBoxFri:
-//                break;
-//            case R.id.checkBoxSat:
-//                break;
-//            case R.id.setAlarmButton:
-//                break;
+
+            case R.id.setDateButton:
+                Log.i("aramsey", "clicked the date button");
+                // Get Current Date
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                dateText.setText((monthOfYear + 1) + "-" + dayOfMonth  + "-" + year);
+                                aMonth = monthOfYear;
+                                aDay = dayOfMonth;
+                                aYear = year;
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+                break;
+            case R.id.setAlarmButton:
+                //TODO logic to set an alamr
+                //TODO create a toast for the time the alarm was set
+                c.set(aYear, aMonth, aDay, aHour, aMinute);
+                stringToWrite += "1," + alarmMessage.getText() + "," + c.get(Calendar.YEAR) + "," + c.get(Calendar.MONTH) +
+                        "," + c.get(Calendar.DAY_OF_MONTH) + "," + c.get(Calendar.HOUR) + "," + c.get(Calendar.MINUTE) + ", timezone, "
+                        + repeatSwitch.isActivated() + ", location"; //TODO timezone & location
+                Toast toast = Toast.makeText(this, "Alarm set for: " +
+                        c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + " " + (c.get(Calendar.DAY_OF_MONTH)+1) +
+                        "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.YEAR), Toast.LENGTH_LONG);
+                toast.show();
+                finish();
+                break;
         }
     }
 }

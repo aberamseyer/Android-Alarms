@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Abe on 11/7/2016.
@@ -114,7 +115,10 @@ public class CreateTimerActivity extends AppCompatActivity implements View.OnCli
             case R.id.setTimerButton:
                 Log.i("timer area", "set timer button tapped");
                 // TODO logic to set a timer
-                // TODO createa  toast saying the time the timer was set for
+                // TODO createa  toast saying the time the timer was set for time
+                Toast toast = Toast.makeText(this, "Timer set for " + timerText.getText() + " seconds", Toast.LENGTH_SHORT);
+                toast.show();
+                finish();
                 break;
         }
     }
