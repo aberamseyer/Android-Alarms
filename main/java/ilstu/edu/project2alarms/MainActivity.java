@@ -16,6 +16,10 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import ilstu.edu.project2alarms.objects.Alarm;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -67,6 +71,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
+
+        Scanner input = null;
+
+        try {
+            input = new Scanner(new File("alarms.csv"));
+        }
+        catch(FileNotFoundException e) {
+            Log.d("mmc", "Couldn't open input file");
+        }
+
+        if(input.hasNext())
+        {
+            input.close();
+
+        }
     }
 
     @Override

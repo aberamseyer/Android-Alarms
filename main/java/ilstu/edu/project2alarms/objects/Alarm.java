@@ -19,12 +19,19 @@ public class Alarm {
     private Calendar calendar;
     private int id;
 
-    public Alarm(String message, Calendar calendar, int id, Location location) {
-        this.message = message;
+    public Alarm(int id, String message, Calendar calendar, Location location) {
         this.id = id;
+        this.message = message;
         this.calendar = calendar;
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
+    }
+    public Alarm(int id, String message, Calendar calendar, double latitude, double longitude) {
+        this.id = id;
+        this.message = message;
+        this.calendar = calendar;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getMessage() {
@@ -32,10 +39,6 @@ public class Alarm {
     }
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Location getLocation() {
-        return location;
     }
 
     public Calendar getCalendar() {
@@ -48,6 +51,14 @@ public class Alarm {
 
     public int getID() {
         return id;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     @Override

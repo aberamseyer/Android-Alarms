@@ -17,9 +17,10 @@ import java.util.TimeZone;
  */
 
 public class AlarmManager {
-    ArrayList<Alarm> alarms = new ArrayList<>();
+    public Alarm[] readAlarms() {
+        ArrayList<Alarm> alarms = new ArrayList<>();
+        Alarm[] alarmsArray;
 
-    public void readAlarms() {
         String alarmString;
         Scanner input = null;
         try {
@@ -29,14 +30,15 @@ public class AlarmManager {
         }
         while (input.hasNextLine()) {
             alarmString = input.nextLine();
-            createAlarm(alarmString);
+            createAlarm(alarmString, alarms);
         }
+        return alarms.toArray(new Alarm[alarms.size()]);
     }
 
     /*
      * Reads a line of a .csv file and puts each element into an array
      */
-    private void createAlarm(String inputData) {
+    private void createAlarm(String inputData, ArrayList<Alarm> alarms) {
         ArrayList<String> data = new ArrayList<>();
         String[] alarmArray;
         int index = 0;
@@ -67,17 +69,16 @@ public class AlarmManager {
         switch (Integer.valueOf(alarmArray[0])) {
             case 0:
             case 1:
-                createAlarmClock(alarmArray);
+                alarms.add(createAlarmClock(alarmArray));
                 break;
             case 2:
             case 3:
-                createTimer(alarmArray);
+                alarms.add(createTimer(alarmArray));
                 break;
         }
     }
 
-    private void createAlarmClock(String[] alarmArray) {
-        Alarm alarmClock;
+    private Alarm createAlarmClock(String[] alarmArray) {
         int id = Integer.valueOf(alarmArray[0]);
         String message = alarmArray[1];
         int year = Integer.valueOf(alarmArray[2]);
@@ -86,16 +87,31 @@ public class AlarmManager {
         int hour = Integer.valueOf(alarmArray[5]);
         int minute = Integer.valueOf(alarmArray[6]);
         TimeZone timeZone = TimeZone.getTimeZone(alarmArray[7]);
-        boolean repeat = false;
-        Location location;
+
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, date, hour, minute);
+        c.setTimeZone(timeZone);
+
+        double latitude = Double.valueOf(alarmArray[8]);
+        double longitude = Double.valueOf(alarmArray[9]);
+
+        return new Alarm(id, message, c, latitude, longitude);
     }
 
-    private void createTimer(String[] alarmArray) {
+    private Alarm createTimer(String[] alarmArray) {
         Alarm timer;
         int id = Integer.valueOf(alarmArray[0]);
         String message = alarmArray[1];
         int hour = Integer.valueOf(alarmArray[2]);
         int minute = Integer.valueOf(alarmArray[3]);
+        double latitude = Double.valueOf(alarmArray[4]);
+        double longitude = Double.valueOf(alarmArray[5]);
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR, hour);
+        c.set(Calendar.MINUTE, minute);
+
+        return new Alarm(id, message, c, latitude, longitude);
     }
 
     public void saveAlarms(Alarm[] alarms) {
@@ -122,20 +138,20 @@ public class AlarmManager {
 
             switch (alarms[i].getID()) {
                 case 1:
-                    outputString += alarms[i].getID() + ",";
-                    outputString += alarms[i].getCalendar().get(Calendar.YEAR) + ",";
-                    outputString += alarms[i].getCalendar().get(Calendar.MONTH) + ",";
-                    outputString += alarms[i].getCalendar().get(Calendar.DATE) + ",";
-                    outputString += alarms[i].getCalendar().get(Calendar.HOUR) + ",";
-                    outputString += alarms[i].getCalendar().get(Calendar.MINUTE) + ",";
-                    outputString += alarms[i].getCalendar().getTimeZone().getID() + ",";
-                    outputString += alarms[i].getLocation().toString();
+                    outputString = alarms[i].getCalendar().get(Calendar.YEAR) + ","
+                            + alarms[i].getCalendar().get(Calendar.MONTH) + ","
+                            + alarms[i].getCalendar().get(Calendar.DATE) + ","
+                            + alarms[i].getCalendar().get(Calendar.HOUR) + ","
+                            + alarms[i].getCalendar().get(Calendar.MINUTE) + ","
+                            + alarms[i].getCalendar().getTimeZone().getID() + ","
+                            + alarms[i].getLatitude() + ","
+                            + alarms[i].getLongitude();
                 case 2:
                 case 3:
-                    outputString += alarms[i].getID() + ",";
-                    outputString += alarms[i].getCalendar().get(Calendar.HOUR) + ",";
-                    outputString += alarms[i].getCalendar().get(Calendar.MINUTE) + ",";
-                    outputString += alarms[i].getLocation().toString();
+                    outputString = alarms[i].getCalendar().get(Calendar.HOUR) + ","
+                            + alarms[i].getCalendar().get(Calendar.MINUTE) + ","
+                            + alarms[i].getLatitude() + ","
+                            + alarms[i].getLongitude();
                     break;
                 default:
                     break;
