@@ -149,7 +149,6 @@ public class CreateAlarmActivity extends AppCompatActivity implements View.OnCli
                         "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.YEAR) + "\n in time zone: " + c.getTimeZone().getID(), Toast.LENGTH_LONG);
                 toast.show();
                 //TODO logic to get location
-
                 finish();
                 break;
         }

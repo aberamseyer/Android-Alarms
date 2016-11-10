@@ -1,12 +1,16 @@
 package ilstu.edu.project2alarms;
 // Abe wrote this
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab, fab1, fab2, fab3;
     private Animation fab1_open, fab2_open, fab3_open, fab_close, rotate_forward, rotate_backward;
     private static ArrayList<Alarm> alarms = new ArrayList<>();
+    private AlarmManager alarmManager;
 
     public static LocationListener locationListener = new LocationListener() {
         @Override
@@ -65,6 +71,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         Calendar c = Calendar.getInstance();
+
+
+//        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+//
+//        try {
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, new LocationListener() {
+//
+//            @Override
+//            public void onLocationChanged(Location location) {
+//
+//                String msg = "New Latitude: " + location.getLatitude()
+//                        + "New Longitude: " + location.getLongitude();
+//
+//                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String provider) {
+//
+//                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                startActivity(intent);
+//                Toast.makeText(getBaseContext(), "Gps is turned off!! ",
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onProviderEnabled(String provider) {
+//                Toast.makeText(getBaseContext(), "Gps is turned on!! ",
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//                // TODO Auto-generated method stub
+//
+//                }
+//            });
+//        } catch (SecurityException se) {
+//            finish();
+//        }
+
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -98,6 +144,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStop() {
         super.onStop();
         // TODO will have same logic as onPause
+    }
+
+    public void createAlarm(Calendar c) {
+        Intent myIntent = new Intent(MainActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, myIntent, 0);
+        alarmManager.set(AlarmManager.RTC, c.getTimeInMillis(), pendingIntent);
     }
 
     @Override
@@ -152,6 +204,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("opened the big one");
         }
     }
+
+//    public void clearAlarms() {
+//        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

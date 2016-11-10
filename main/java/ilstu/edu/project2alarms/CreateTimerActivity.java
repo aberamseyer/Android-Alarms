@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import android.widget.Toast;
 public class CreateTimerActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView minText, daysText;
+    EditText message;
     private Button button0, button1, button2, button3, button4, button5, button6, button7, button8,
             button9, buttonDelete, setTimer;
 
@@ -24,6 +26,7 @@ public class CreateTimerActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_timer);
 
+        message = (EditText)findViewById(R.id.editText);
         minText = (TextView)findViewById(R.id.minutesText);
         daysText = (TextView)findViewById(R.id.daysText);
         button0 = (Button)findViewById(R.id.button0);
@@ -137,6 +140,7 @@ public class CreateTimerActivity extends AppCompatActivity implements View.OnCli
                 // TODO createa  toast saying the time the timer was set for time
                 Toast toast = Toast.makeText(this, "Timer set for " + daysText.getText() + " days" +
                         " and " + minText.getText() + " minutes", Toast.LENGTH_SHORT);
+                message.getText();
                 toast.show();
                 finish();
                 break;
