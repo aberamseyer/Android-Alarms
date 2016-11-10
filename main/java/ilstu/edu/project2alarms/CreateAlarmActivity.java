@@ -2,7 +2,9 @@ package ilstu.edu.project2alarms;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -41,8 +43,10 @@ public class CreateAlarmActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_alarm);
+
 
         //timePicker = (TimePicker)findViewById(R.id.);
         stringToWrite = "";
