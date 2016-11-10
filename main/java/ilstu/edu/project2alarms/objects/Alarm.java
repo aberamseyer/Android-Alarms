@@ -67,7 +67,6 @@ public class Alarm {
         String outString = "";
         int hour;
         String timeOfDay = "AM";
-        Calendar today = Calendar.getInstance();
         if (id == 0 || id == 1) {
             if (calendar.get(Calendar.HOUR) > 11) {
                 if (calendar.get(Calendar.HOUR) > 12) {
@@ -75,7 +74,7 @@ public class Alarm {
                 }
                 timeOfDay = "PM";
             }
-            outString = "Alarm set for " + calendar.get(Calendar.MONTH) + "/"
+            outString = "Alarm set for " + (calendar.get(Calendar.MONTH) + 1) + "/"
                     + calendar.get(Calendar.DATE) + " at "
                     + calendar.get(Calendar.HOUR) + ":"
                     + calendar.get(Calendar.MINUTE) + timeOfDay;

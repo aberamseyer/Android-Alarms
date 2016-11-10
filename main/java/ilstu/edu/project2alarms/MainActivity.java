@@ -65,10 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         Calendar c = Calendar.getInstance();
-        c.set(2016,11,10, 6, 30);
-        alarms.add(new Alarm(0, "test", c, 10, 20));
-        c.set(2016,11,11,6,20);
-        alarms.add(new Alarm(1, "test2", c, 11, 30));
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
+import ilstu.edu.project2alarms.objects.Alarm;
+
 /**
  * Created by Abe on 11/8/2016.
  */
@@ -130,11 +132,22 @@ public class CreateAlarmActivity extends AppCompatActivity implements View.OnCli
                 stringToWrite += "1," + alarmMessage.getText() + "," + c.get(Calendar.YEAR) + "," + c.get(Calendar.MONTH) +
                         "," + c.get(Calendar.DAY_OF_MONTH) + "," + c.get(Calendar.HOUR) + "," + c.get(Calendar.MINUTE) + ", timezone, "
                         + repeatSwitch.isActivated() + ", location"; //TODO timezone & location
+
+                boolean repeat = repeatSwitch.isActivated();
+                int id;
+                if(repeat) {
+                    id = 1;
+                }
+                else {
+                    id = 0;
+                }
+
+                MainActivity.addAlarm(new Alarm(id, alarmMessage.toString(), c, 10, 20));
+
                 Toast toast = Toast.makeText(this, "Alarm set for: " +
                         c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + " " + (c.get(Calendar.DAY_OF_MONTH)+1) +
                         "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.YEAR) + "\n in time zone: " + c.getTimeZone().getID(), Toast.LENGTH_LONG);
                 toast.show();
-                boolean repeat = repeatSwitch.isActivated();
                 //TODO logic to get location
 
                 finish();
