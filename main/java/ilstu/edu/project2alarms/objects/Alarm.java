@@ -18,6 +18,8 @@ public class Alarm {
     private double longitude;
     private String timeStamp;
     private Calendar calendar;
+    int days;
+    int minutes;
     private int id;
 
     public Alarm(int id, String message, Calendar calendar, Location location) {
@@ -31,6 +33,36 @@ public class Alarm {
         this.id = id;
         this.message = message;
         this.calendar = calendar;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+    public Alarm(int id, String message, int days, int minutes, Location location) {
+        this.id = id;
+        this.message = message;
+        this.days = days;
+        this.minutes = minutes;
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+    }
+    public Alarm(int id, String message, int minutes, Location location) {
+        this.id = id;
+        this.message = message;
+        this.minutes = minutes;
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+    }
+    public Alarm(int id, String message, int days, int minutes, double latitude, double longitude) {
+        this.id = id;
+        this.message = message;
+        this.days = days;
+        this.minutes = minutes;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+    public Alarm(int id, String message, int minutes, double latitude, double longitude) {
+        this.id = id;
+        this.message = message;
+        this.minutes = minutes;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -62,31 +94,40 @@ public class Alarm {
         return longitude;
     }
 
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
     @Override
     public String toString() {
         String outString = "";
-        int hour;
-        String timeOfDay = "AM";
+        Calendar today = Calendar.getInstance();
         if (id == 0 || id == 1) {
-            if (calendar.get(Calendar.HOUR) > 11) {
-                if (calendar.get(Calendar.HOUR) > 12) {
-                    hour = Calendar.HOUR % 12;
-                }
-                timeOfDay = "PM";
-            }
             outString = "Alarm set for " + (calendar.get(Calendar.MONTH) + 1) + "/"
                     + calendar.get(Calendar.DATE) + " at "
                     + calendar.get(Calendar.HOUR) + ":"
-                    + calendar.get(Calendar.MINUTE) + timeOfDay;
+                    + calendar.get(Calendar.MINUTE);
             if (id == 1) {
                 outString += ", Repeating";
             }
         } else if (id == 2) {
-            outString = "Timer Set for " + calendar.get(Calendar.DATE) + " days, " +
-                    calendar.get(calendar.MINUTE) + " minutes from now.";
+            outString = "Timer Set for " + days + " days, " +
+                    minutes + " minutes from now.";
         } else {
-            outString = "Location timer set for " + calendar.get(Calendar.DATE) + " days, " +
-                    calendar.get(calendar.MINUTE) + " minutes from now.";
+            outString = "Location timer set for " + days + " days, " +
+                    minutes + " minutes from now.";
         }
     return outString;
     }

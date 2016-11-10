@@ -9,6 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
+import ilstu.edu.project2alarms.objects.Alarm;
+
 /**
  * Created by Abe on 11/7/2016.
  */
@@ -138,9 +142,11 @@ public class CreateTimerActivity extends AppCompatActivity implements View.OnCli
                 Log.i("timer area", "set timer button tapped");
                 // TODO logic to set a timer
                 // TODO createa  toast saying the time the timer was set for time
+
+                MainActivity.addAlarm(new Alarm(2, message.toString(),Integer.parseInt(daysText.getText().toString()),
+                        Integer.parseInt(minText.getText().toString()), 10, 20));
                 Toast toast = Toast.makeText(this, "Timer set for " + daysText.getText() + " days" +
                         " and " + minText.getText() + " minutes", Toast.LENGTH_SHORT);
-                message.getText();
                 toast.show();
                 finish();
                 break;

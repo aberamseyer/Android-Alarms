@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Calendar c = Calendar.getInstance();
+        if(alarms.isEmpty()) {
+            alarms.add(new Alarm(3, "Get up and walk!", 0, 5, 10, 20));
+        }
 
 
 //        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -137,20 +139,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-        // TODO needs to save the current list of alarms in the app to the alarms csv file
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        // TODO will have same logic as onPause
     }
 
-    public void createAlarm(Calendar c) {
-        Intent myIntent = new Intent(MainActivity.this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, myIntent, 0);
-        alarmManager.set(AlarmManager.RTC, c.getTimeInMillis(), pendingIntent);
-    }
+//    public void createAlarm(Calendar c) {
+//        Intent myIntent = new Intent(MainActivity.this, AlarmReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, myIntent, 0);
+//        alarmManager.set(AlarmManager.RTC, c.getTimeInMillis(), pendingIntent);
+//    }
 
     @Override
     public void onClick(View v) {
@@ -239,13 +239,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return alarms.toArray(new Alarm[alarms.size()]);
     }
 
+    public static ArrayList<Alarm> getAlarmList() {
+        return alarms;
+    }
+
     public static void addAlarm(Alarm alarm) {
         alarms.add(alarm);
     }
 
-    public Alarm[] readAlarms() {
-        ArrayList<Alarm> alarms = new ArrayList<>();
-        Alarm[] alarmsArray;
+    public void readAlarms() {
         String fileData;
         String[] fileDataArray = null;
 
@@ -256,15 +258,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fileData = input.toString();
             input.close();
             fileDataArray = fileData.split("\n");
+            for (int i = 0; i < fileDataArray.length; i++) {
+                alarmString = fileDataArray[i];
+                AlarmFileFactory.createAlarm(alarmString, alarms);
+            }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < fileDataArray.length; i++) {
-            alarmString = fileDataArray[i];
-            AlarmFileFactory.createAlarm(alarmString, alarms);
-        }
-        return alarms.toArray(new Alarm[alarms.size()]);
     }
 
     public void saveAlarms() {
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (alarm.getID()) {
                     case 0:
                     case 1:
-                        outputString = alarm.getCalendar().get(Calendar.YEAR) + ","
+                        outputString += alarm.getCalendar().get(Calendar.YEAR) + ","
                                 + alarm.getCalendar().get(Calendar.MONTH) + ","
                                 + alarm.getCalendar().get(Calendar.DATE) + ","
                                 + alarm.getCalendar().get(Calendar.HOUR) + ","
@@ -299,8 +300,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 + alarm.getLongitude();
                     case 2:
                     case 3:
-                        outputString = alarm.getCalendar().get(Calendar.HOUR) + ","
-                                + alarm.getCalendar().get(Calendar.MINUTE) + ","
+                        outputString += alarm.getDays() + ","
+                                + alarm.getMinutes() + ","
                                 + alarm.getLatitude() + ","
                                 + alarm.getLongitude();
                         break;
@@ -308,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                 }
                 outputString += "\n";
+                Log.d("mmc", outputString);
                 outputStream.write(outputString.getBytes());
             }
             outputStream.close();

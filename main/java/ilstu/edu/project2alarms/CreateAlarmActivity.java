@@ -133,7 +133,7 @@ public class CreateAlarmActivity extends AppCompatActivity implements View.OnCli
                         "," + c.get(Calendar.DAY_OF_MONTH) + "," + c.get(Calendar.HOUR) + "," + c.get(Calendar.MINUTE) + ", timezone, "
                         + repeatSwitch.isActivated() + ", location"; //TODO timezone & location
 
-                boolean repeat = repeatSwitch.isActivated();
+                boolean repeat = repeatSwitch.isChecked();
                 int id;
                 if(repeat) {
                     id = 1;

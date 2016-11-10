@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ilstu.edu.project2alarms.objects.Alarm;
+
 /**
  * Created by Abe on 11/10/2016.
  */
@@ -116,6 +118,7 @@ public class EditLocationActivity extends AppCompatActivity implements View.OnCl
                 Log.i("timer area", "set timer button tapped");
                 // TODO logic to set a timer
                 // TODO createa  toast saying the time the timer was set for time
+                MainActivity.getAlarmList().get(0).setMinutes(Integer.parseInt(minText.getText().toString()));
                 Toast toast = Toast.makeText(this, "Location alarm set for " + minText.getText()
                         + " minutes", Toast.LENGTH_SHORT);
                 toast.show();

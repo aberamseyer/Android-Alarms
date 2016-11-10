@@ -85,15 +85,11 @@ public class AlarmFileFactory {
         Alarm timer;
         int id = Integer.valueOf(alarmArray[0]);
         String message = alarmArray[1];
-        int hour = Integer.valueOf(alarmArray[2]);
-        int minute = Integer.valueOf(alarmArray[3]);
+        int days = Integer.valueOf(alarmArray[2]);
+        int minutes = Integer.valueOf(alarmArray[3]);
         double latitude = Double.valueOf(alarmArray[4]);
         double longitude = Double.valueOf(alarmArray[5]);
 
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR, hour);
-        c.set(Calendar.MINUTE, minute);
-
-        return new Alarm(id, message, c, latitude, longitude);
+        return new Alarm(id, message, days, minutes, latitude, longitude);
     }
 }
