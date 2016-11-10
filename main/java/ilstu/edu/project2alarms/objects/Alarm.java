@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 
 import java.util.Calendar;
+import java.util.Timer;
 
 /**
  * Created by Michael McHugh on 11/7/2016.
@@ -64,22 +65,30 @@ public class Alarm {
     @Override
     public String toString() {
         String outString = "";
+        int hour;
+        String timeOfDay = "AM";
+        Calendar today = Calendar.getInstance();
         if (id == 0 || id == 1) {
-            outString = calendar.get(Calendar.MONTH) + " "
-                    + calendar.get(Calendar.DATE) + " "
+            if (calendar.get(Calendar.HOUR) > 11) {
+                if (calendar.get(Calendar.HOUR) > 12) {
+                    hour = Calendar.HOUR % 12;
+                }
+                timeOfDay = "PM";
+            }
+            outString = "Alarm set for " + calendar.get(Calendar.MONTH) + "/"
+                    + calendar.get(Calendar.DATE) + " at "
                     + calendar.get(Calendar.HOUR) + ":"
-                    + calendar.get(Calendar.MINUTE);
+                    + calendar.get(Calendar.MINUTE) + timeOfDay;
             if (id == 1) {
                 outString += ", Repeating";
             }
-            else if (id == 2) {
-                outString = "Timer Set for " + calendar.get(Calendar.DATE) + " days, " +
-                        calendar.get(calendar.MINUTE) + " minutes from now.";
-            } else {
-                outString = "Location timer set for " + calendar.get(Calendar.DATE) + " days, " +
-                        calendar.get(calendar.MINUTE) + " minutes from now.";
-            }
+        } else if (id == 2) {
+            outString = "Timer Set for " + calendar.get(Calendar.DATE) + " days, " +
+                    calendar.get(calendar.MINUTE) + " minutes from now.";
+        } else {
+            outString = "Location timer set for " + calendar.get(Calendar.DATE) + " days, " +
+                    calendar.get(calendar.MINUTE) + " minutes from now.";
         }
-        return outString;
+    return outString;
     }
 }

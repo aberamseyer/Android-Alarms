@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3;
     private Animation fab1_open, fab2_open, fab3_open, fab_close, rotate_forward, rotate_backward;
-    private static Alarm[] alarms = new Alarm[1];
+    private static ArrayList<Alarm> alarms = new ArrayList<>();
 
     public static LocationListener locationListener = new LocationListener() {
         @Override
@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         Calendar c = Calendar.getInstance();
-        c.set(2016,11,10);
-        alarms[0] = new Alarm(0, "test", c, 10, 20);
+        c.set(2016,11,10, 6, 30);
+        alarms.add(new Alarm(0, "test", c, 10, 20));
+        c.set(2016,11,11,6,20);
+        alarms.add(new Alarm(1, "test2", c, 11, 30));
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -181,7 +183,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public static Alarm[] getAlarms() {
-        return alarms;
+        return alarms.toArray(new Alarm[alarms.size()]);
+    }
+
+    public static void addAlarm(Alarm alarm) {
+        alarms.add(alarm);
     }
 
     public Alarm[] readAlarms() {
@@ -214,11 +220,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String message;
         try {
             outputStream = openFileOutput("alarms.csv", Context.MODE_PRIVATE);
-            for (int i = 0; i < alarms.length; i++) {
+            for (Alarm alarm : alarms) {
                 outputString = "";
-                outputString += alarms[i].getID() + ",";
+                outputString += alarm.getID() + ",";
 
-                message = alarms[i].getMessage();
+                message = alarm.getMessage();
                 if (message.contains("\"")) {
                     message = message.replaceAll("\"", "\"\"");
                 }
@@ -227,23 +233,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 outputString += message + ",";
 
-                switch (alarms[i].getID()) {
+                switch (alarm.getID()) {
                     case 0:
                     case 1:
-                        outputString = alarms[i].getCalendar().get(Calendar.YEAR) + ","
-                                + alarms[i].getCalendar().get(Calendar.MONTH) + ","
-                                + alarms[i].getCalendar().get(Calendar.DATE) + ","
-                                + alarms[i].getCalendar().get(Calendar.HOUR) + ","
-                                + alarms[i].getCalendar().get(Calendar.MINUTE) + ","
-                                + alarms[i].getCalendar().getTimeZone().getID() + ","
-                                + alarms[i].getLatitude() + ","
-                                + alarms[i].getLongitude();
+                        outputString = alarm.getCalendar().get(Calendar.YEAR) + ","
+                                + alarm.getCalendar().get(Calendar.MONTH) + ","
+                                + alarm.getCalendar().get(Calendar.DATE) + ","
+                                + alarm.getCalendar().get(Calendar.HOUR) + ","
+                                + alarm.getCalendar().get(Calendar.MINUTE) + ","
+                                + alarm.getCalendar().getTimeZone().getID() + ","
+                                + alarm.getLatitude() + ","
+                                + alarm.getLongitude();
                     case 2:
                     case 3:
-                        outputString = alarms[i].getCalendar().get(Calendar.HOUR) + ","
-                                + alarms[i].getCalendar().get(Calendar.MINUTE) + ","
-                                + alarms[i].getLatitude() + ","
-                                + alarms[i].getLongitude();
+                        outputString = alarm.getCalendar().get(Calendar.HOUR) + ","
+                                + alarm.getCalendar().get(Calendar.MINUTE) + ","
+                                + alarm.getLatitude() + ","
+                                + alarm.getLongitude();
                         break;
                     default:
                         break;
