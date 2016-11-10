@@ -2,6 +2,9 @@ package ilstu.edu.project2alarms;
 // Abe wrote this
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +16,36 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import ilstu.edu.project2alarms.objects.Alarm;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2;
     private Animation fab1_open, fab2_open, fab_close, rotate_forward, rotate_backward;
+    private static Alarm[] alarms;
+
+    public static LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +98,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.fab2:
                 Log.d("aramsey", "fab 2 tapped");
+                animateFab();
                 i = new Intent(this,CreateTimerActivity.class);
                 startActivity(i);
-                animateFab();
                 break;
         }
     }
@@ -121,5 +149,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static Alarm[] getAlarms() {
+        return alarms;
     }
 }

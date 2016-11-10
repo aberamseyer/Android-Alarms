@@ -136,7 +136,7 @@ public class CreateAlarmActivity extends AppCompatActivity implements View.OnCli
                 toast.show();
                 boolean repeat = repeatSwitch.isActivated();
                 //TODO logic to get location
-                //TODO logic to set an alarm
+
                 finish();
                 break;
         }
