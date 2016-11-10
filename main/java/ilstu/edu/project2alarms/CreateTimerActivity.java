@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class CreateTimerActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView timerText;
+    private TextView minText, daysText;
     private Button button0, button1, button2, button3, button4, button5, button6, button7, button8,
             button9, buttonDelete, setTimer;
 
@@ -24,7 +24,8 @@ public class CreateTimerActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_timer);
 
-        timerText = (TextView)findViewById(R.id.timerTime);
+        minText = (TextView)findViewById(R.id.minutesText);
+        daysText = (TextView)findViewById(R.id.daysText);
         button0 = (Button)findViewById(R.id.button0);
         button1 = (Button)findViewById(R.id.button1);
         button2 = (Button)findViewById(R.id.button2);
@@ -55,69 +56,87 @@ public class CreateTimerActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    private void updateTimer(int num) {
+        int minTextAsInt = Integer.parseInt(minText.getText().toString());
+        int daysTextAsInt = Integer.parseInt(daysText.getText().toString());
+        boolean min2digits = (minTextAsInt > 9) ? true : false;
+        boolean days2digits = (daysTextAsInt > 9) ? true : false;
+        boolean daysHasADigit = (daysTextAsInt != 0) ? true : false;
+
+
+        if(!days2digits) {
+            if(daysHasADigit) {
+                daysText.setText(daysText.getText().toString().charAt(1) + "" +
+                                minText.getText().toString().charAt(0));
+                minText.setText(minText.getText().toString().charAt(1) + "" + num);
+            }
+            else if(min2digits) {
+                daysText.setText(0 + "" + minText.getText().toString().charAt(0));
+                minText.setText(minText.getText().toString().charAt(1) + "" + num);
+            } else {
+                minText.setText(minText.getText().toString().charAt(1) + "" + num);
+            }
+        }
+        min2digits = (minTextAsInt > 9) ? true : false;
+        days2digits = (daysTextAsInt > 9) ? true : false;
+        daysHasADigit = (daysTextAsInt != 0) ? true : false;
+        Log.i("booleans", min2digits + " " + days2digits + " " + daysHasADigit);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button0:
                 Log.i("timer area", "button 0 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "0");
+                updateTimer(0);
                 break;
             case R.id.button1:
                 Log.i("timer area", "button 1 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "1");
+                updateTimer(1);
                 break;
             case R.id.button2:
                 Log.i("timer area", "button 2 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "2");
+                updateTimer(2);
                 break;
             case R.id.button3:
                 Log.i("timer area", "button 3 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "3");
+                updateTimer(3);
                 break;
             case R.id.button4:
                 Log.i("timer area", "button 4 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "4");
+                updateTimer(4);
                 break;
             case R.id.button5:
                 Log.i("timer area", "button 5 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "5");
+                updateTimer(5);
                 break;
             case R.id.button6:
                 Log.i("timer area", "button 6 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "6");
+                updateTimer(6);
                 break;
             case R.id.button7:
                 Log.i("timer area", "button 7 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "7");
+                updateTimer(7);
                 break;
             case R.id.button8:
                 Log.i("timer area", "button 8 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "8");
+                updateTimer(8);
                 break;
             case R.id.button9:
                 Log.i("timer area", "button 9 tapped");
-                if(!(timerText.getText().length() > 5))
-                    timerText.setText(timerText.getText() + "9");
+                updateTimer(9);
                 break;
             case R.id.buttonDelete:
                 Log.i("timer area", "delete button tapped");
-                if(!(timerText.getText().length() < 1))
-                    timerText.setText(timerText.getText().subSequence(0, timerText.getText().length() - 1));
+                daysText.setText("00");
+                minText.setText("00");
                 break;
             case R.id.setTimerButton:
                 Log.i("timer area", "set timer button tapped");
                 // TODO logic to set a timer
                 // TODO createa  toast saying the time the timer was set for time
-                Toast toast = Toast.makeText(this, "Timer set for " + timerText.getText() + " seconds", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(this, "Timer set for " + daysText.getText() + " days" +
+                        " and " + minText.getText() + " minutes", Toast.LENGTH_SHORT);
                 toast.show();
                 finish();
                 break;

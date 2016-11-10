@@ -81,13 +81,10 @@
             android:id="@+id/button0"
             android:text="0" />
 
-        <Button
+        <Button android:text="CLR"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:textSize="12sp"
-            android:id="@+id/buttonDelete"
-            android:background="?android:attr/homeAsUpIndicator"
-            android:layout_columnSpan="1"
-            android:text="     " />
+            android:textSize="30sp"
+            android:id="@+id/buttonDelete" />
 
     </GridLayout>
 
@@ -104,6 +101,83 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintVertical_bias="0.3" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="92dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/space"
+        android:layout_marginTop="24dp"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/space"
+        app:layout_constraintBottom_toBottomOf="@+id/space"
+        app:layout_constraintLeft_toLeftOf="@+id/space"
+        app:layout_constraintRight_toRightOf="@+id/space"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp">
+
+        <TextView
+            android:text="00"
+            android:layout_height="wrap_content"
+            android:id="@+id/daysText"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:textColor="#FFFFFF"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="85dp"
+            android:layout_width="wrap_content"
+            android:gravity="right" />
+
+        <TextView
+            android:text="Days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:textColor="@android:color/background_light"
+            android:gravity="left"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintVertical_bias="0.96"
+            tools:layout_editor_absoluteY="156dp"
+            app:layout_constraintLeft_toRightOf="@+id/minutesText"
+            android:layout_marginStart="16dp"
+            android:layout_weight="2.98"
+            android:foregroundGravity="left" />
+
+        <TextView
+            android:text="00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/minutesText"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:textColor="#FFFFFF"
+            tools:layout_editor_absoluteX="227dp"
+            tools:layout_editor_absoluteY="101dp"
+            android:gravity="right" />
+
+        <TextView
+            android:text="minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView7"
+            android:textColor="@android:color/background_light"
+            android:gravity="left"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintVertical_bias="0.96"
+            tools:layout_editor_absoluteY="116dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintLeft_toRightOf="@+id/daysText"
+            android:layout_weight="1"
+            android:foregroundGravity="left" />
+    </LinearLayout>
+
     <TextView
         android:text="Create Timer"
         android:layout_width="wrap_content"
@@ -116,47 +190,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="92dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorAccent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/space"
-        android:layout_marginTop="24dp"
-        app:layout_constraintHorizontal_bias="1.0" />
-
-    <TextView
-        android:text="sec."
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:textColor="@android:color/background_light"
-        app:layout_constraintLeft_toRightOf="@+id/timerTime"
-        app:layout_constraintBottom_toBottomOf="@+id/timerTime"
-        android:gravity="left"
-        app:layout_constraintHorizontal_bias="0.05"
-        android:layout_marginStart="4dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintVertical_bias="0.96" />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/timerTime"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:gravity="right|center_vertical"
-        android:foregroundGravity="right"
-        android:letterSpacing=".3"
-        android:background="@drawable/bottomborder"
-        app:layout_constraintLeft_toLeftOf="@+id/space"
-        app:layout_constraintRight_toRightOf="@+id/space"
-        android:layout_marginEnd="80dp"
-        android:layout_marginStart="80dp"
-        app:layout_constraintTop_toTopOf="@+id/space"
-        app:layout_constraintBottom_toBottomOf="@+id/space" />
 
 </android.support.constraint.ConstraintLayout>
