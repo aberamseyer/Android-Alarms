@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import ilstu.edu.project2alarms.objects.Alarm;
+
 /**
  * Created by Abe on 11/7/2016.
  */
@@ -15,7 +17,7 @@ import android.widget.ListView;
 public class AlarmListFragment extends ListFragment {
     // TODO needs to read from the alarms csv file to create a string array of .toString() alarm objects
 
-    String[] alarms = new String[] { "Alarms1","Alarm2","Alarm3","Alarm4","Alarm5","Alarm6","Alarm7","Alarm8","Alarm9" };
+    Alarm[] alarms = MainActivity.getAlarms();
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -24,7 +26,7 @@ public class AlarmListFragment extends ListFragment {
         View view =inflater.inflate(R.layout.fragment_alarms,
                 container, false);
         //List<?> items = new ArrayAdapter<?>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<Alarm> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, alarms);
         setListAdapter(adapter);
 

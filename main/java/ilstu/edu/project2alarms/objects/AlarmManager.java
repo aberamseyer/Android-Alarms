@@ -74,7 +74,6 @@ public class AlarmManager {
                 createTimer(alarmArray);
                 break;
         }
-
     }
 
     private void createAlarmClock(String[] alarmArray) {
@@ -97,7 +96,6 @@ public class AlarmManager {
         String message = alarmArray[1];
         int hour = Integer.valueOf(alarmArray[2]);
         int minute = Integer.valueOf(alarmArray[3]);
-        Location location;
     }
 
     public void saveAlarms(Alarm[] alarms) {
@@ -111,7 +109,7 @@ public class AlarmManager {
         }
         for (int i = 0; i < alarms.length; i++) {
             outputString = "";
-            outputString += alarms[i].getId() + ",";
+            outputString += alarms[i].getID() + ",";
 
             message = alarms[i].getMessage();
             if (message.contains("\"")) {
@@ -122,20 +120,19 @@ public class AlarmManager {
             }
             outputString += message + ",";
 
-            switch (alarms[i].getId()) {
+            switch (alarms[i].getID()) {
                 case 1:
-                    outputString += alarms[i].getCalendar().getTimeZone().getID() + ",";
+                    outputString += alarms[i].getID() + ",";
                     outputString += alarms[i].getCalendar().get(Calendar.YEAR) + ",";
                     outputString += alarms[i].getCalendar().get(Calendar.MONTH) + ",";
                     outputString += alarms[i].getCalendar().get(Calendar.DATE) + ",";
                     outputString += alarms[i].getCalendar().get(Calendar.HOUR) + ",";
                     outputString += alarms[i].getCalendar().get(Calendar.MINUTE) + ",";
                     outputString += alarms[i].getCalendar().getTimeZone().getID() + ",";
-                    outputString += alarms[i].isRepeating() + ",";
                     outputString += alarms[i].getLocation().toString();
                 case 2:
                 case 3:
-                    outputString += alarms[i].getCalendar().getTimeZone().getID() + ",";
+                    outputString += alarms[i].getID() + ",";
                     outputString += alarms[i].getCalendar().get(Calendar.HOUR) + ",";
                     outputString += alarms[i].getCalendar().get(Calendar.MINUTE) + ",";
                     outputString += alarms[i].getLocation().toString();

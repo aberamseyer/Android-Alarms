@@ -13,15 +13,18 @@ import java.util.Calendar;
 
 public class Alarm {
     private String message;
-    private Location location;
+    private double latitude;
+    private double longitude;
+    private String timeStamp;
     private Calendar calendar;
-    private boolean repeat;
     private int id;
 
-    public Alarm(String message, Calendar calendar, int id) {
+    public Alarm(String message, Calendar calendar, int id, Location location) {
         this.message = message;
         this.id = id;
         this.calendar = calendar;
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
     }
 
     public String getMessage() {
@@ -43,11 +46,29 @@ public class Alarm {
         this.calendar = calendar;
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
-    public boolean isRepeating() {
-        return repeat;
+    @Override
+    public String toString() {
+        String outString = "";
+        if (id == 0 || id == 1) {
+            outString = calendar.get(Calendar.MONTH) + " "
+                    + calendar.get(Calendar.DATE) + " "
+                    + calendar.get(Calendar.HOUR) + ":"
+                    + calendar.get(Calendar.MINUTE);
+            if (id == 1) {
+                outString += ", Repeating";
+            }
+            else if (id == 2) {
+                outString = "Timer Set for " + calendar.get(Calendar.DATE) + " days, " +
+                        calendar.get(calendar.MINUTE) + " minutes from now.";
+            } else {
+                outString = "Location timer set for " + calendar.get(Calendar.DATE) + " days, " +
+                        calendar.get(calendar.MINUTE) + " minutes from now.";
+            }
+        }
+        return outString;
     }
 }
