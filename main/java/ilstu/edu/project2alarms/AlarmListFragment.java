@@ -1,5 +1,6 @@
 package ilstu.edu.project2alarms;
 
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,11 +37,5 @@ public class AlarmListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        // Access the other fragment directly and call the "change" method  of that fragment
-//        TextFragment txt = (TextFragment)getFragmentManager().
-//                findFragmentById(R.id.fragment2);
-//        txt.change(AndroidOS[position],"Version : "+Version[position]);
-//        getListView().setSelector(android.R.color.holo_blue_dark);
-//    }
     }
 }

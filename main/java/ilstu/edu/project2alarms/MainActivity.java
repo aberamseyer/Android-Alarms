@@ -34,8 +34,8 @@ import ilstu.edu.project2alarms.objects.AlarmFileFactory;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fab1, fab2;
-    private Animation fab1_open, fab2_open, fab_close, rotate_forward, rotate_backward;
+    private FloatingActionButton fab, fab1, fab2, fab3;
+    private Animation fab1_open, fab2_open, fab3_open, fab_close, rotate_forward, rotate_backward;
     private static Alarm[] alarms = new Alarm[1];
 
     public static LocationListener locationListener = new LocationListener() {
@@ -75,8 +75,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab1 = (FloatingActionButton)findViewById(R.id.fab1);
         fab2 = (FloatingActionButton)findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton)findViewById(R.id.fab3);
         fab1_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab1_open);
         fab2_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab2_open);
+        fab3_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab3_open);
 
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
         rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
+        fab3.setOnClickListener(this);
     }
 
     @Override
@@ -120,24 +123,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 i = new Intent(this,CreateTimerActivity.class);
                 startActivity(i);
                 break;
+            case R.id.fab3:
+                animateFab();
+                i = new Intent(this,EditLocationActivity.class);
+                startActivity(i);
+                break;
         }
     }
 
     public void animateFab() {
         if(isFabOpen) {
             fab.startAnimation(rotate_backward);
+            fab3.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
             fab1.startAnimation(fab_close);
             fab1.setClickable(false);
             fab2.setClickable(false);
+            fab3.setClickable(false);
             isFabOpen = false;
         }
         else {
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab1_open);
             fab2.startAnimation(fab2_open);
+            fab3.startAnimation(fab3_open);
             fab1.setClickable(true);
             fab2.setClickable(true);
+            fab3.setClickable(true);
             isFabOpen = true;
             System.out.println("opened the big one");
         }
