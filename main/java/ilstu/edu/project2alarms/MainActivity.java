@@ -1,6 +1,7 @@
 package ilstu.edu.project2alarms;
 // Abe wrote this
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,17 +18,25 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import ilstu.edu.project2alarms.objects.Alarm;
+import ilstu.edu.project2alarms.objects.AlarmFileFactory;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2;
     private Animation fab1_open, fab2_open, fab_close, rotate_forward, rotate_backward;
-    private static Alarm[] alarms;
+    private static Alarm[] alarms = new Alarm[1];
 
     public static LocationListener locationListener = new LocationListener() {
         @Override
@@ -54,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Calendar c = Calendar.getInstance();
+        c.set(2016,11,10);
+        alarms[0] = new Alarm(0, "test", c, 10, 20);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,21 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
-
-        Scanner input = null;
-
-        try {
-            input = new Scanner(new File("alarms.csv"));
-        }
-        catch(FileNotFoundException e) {
-            Log.d("mmc", "Couldn't open input file");
-        }
-
-        if(input.hasNext())
-        {
-            input.close();
-
-        }
     }
 
     @Override
@@ -171,5 +170,79 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static Alarm[] getAlarms() {
         return alarms;
+    }
+
+    public Alarm[] readAlarms() {
+        ArrayList<Alarm> alarms = new ArrayList<>();
+        Alarm[] alarmsArray;
+        String fileData;
+        String[] fileDataArray = null;
+
+        String alarmString;
+        FileReader input = null;
+        try {
+            input = new FileReader("alarms.csv");
+            fileData = input.toString();
+            input.close();
+            fileDataArray = fileData.split("\n");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < fileDataArray.length; i++) {
+            alarmString = fileDataArray[i];
+            AlarmFileFactory.createAlarm(alarmString, alarms);
+        }
+        return alarms.toArray(new Alarm[alarms.size()]);
+    }
+
+    public void saveAlarms() {
+        FileOutputStream outputStream;
+        String outputString;
+        String message;
+        try {
+            outputStream = openFileOutput("alarms.csv", Context.MODE_PRIVATE);
+            for (int i = 0; i < alarms.length; i++) {
+                outputString = "";
+                outputString += alarms[i].getID() + ",";
+
+                message = alarms[i].getMessage();
+                if (message.contains("\"")) {
+                    message = message.replaceAll("\"", "\"\"");
+                }
+                if (message.contains(",")) {
+                    message = "\"" + message + "\"";
+                }
+                outputString += message + ",";
+
+                switch (alarms[i].getID()) {
+                    case 0:
+                    case 1:
+                        outputString = alarms[i].getCalendar().get(Calendar.YEAR) + ","
+                                + alarms[i].getCalendar().get(Calendar.MONTH) + ","
+                                + alarms[i].getCalendar().get(Calendar.DATE) + ","
+                                + alarms[i].getCalendar().get(Calendar.HOUR) + ","
+                                + alarms[i].getCalendar().get(Calendar.MINUTE) + ","
+                                + alarms[i].getCalendar().getTimeZone().getID() + ","
+                                + alarms[i].getLatitude() + ","
+                                + alarms[i].getLongitude();
+                    case 2:
+                    case 3:
+                        outputString = alarms[i].getCalendar().get(Calendar.HOUR) + ","
+                                + alarms[i].getCalendar().get(Calendar.MINUTE) + ","
+                                + alarms[i].getLatitude() + ","
+                                + alarms[i].getLongitude();
+                        break;
+                    default:
+                        break;
+                }
+                outputString += "\n";
+                outputStream.write(outputString.getBytes());
+            }
+            outputStream.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

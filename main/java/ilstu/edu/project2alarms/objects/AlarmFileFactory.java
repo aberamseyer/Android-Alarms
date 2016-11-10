@@ -16,29 +16,12 @@ import java.util.TimeZone;
  * Created by emolu on 11/9/2016.
  */
 
-public class AlarmManager {
-    public Alarm[] readAlarms() {
-        ArrayList<Alarm> alarms = new ArrayList<>();
-        Alarm[] alarmsArray;
-
-        String alarmString;
-        Scanner input = null;
-        try {
-            input = new Scanner(new File("alarms.csv"));
-        } catch (FileNotFoundException e) {
-            Log.d("mmc", "Could Not Open Input File");
-        }
-        while (input.hasNextLine()) {
-            alarmString = input.nextLine();
-            createAlarm(alarmString, alarms);
-        }
-        return alarms.toArray(new Alarm[alarms.size()]);
-    }
+public class AlarmFileFactory {
 
     /*
      * Reads a line of a .csv file and puts each element into an array
      */
-    private void createAlarm(String inputData, ArrayList<Alarm> alarms) {
+    public static void createAlarm(String inputData, ArrayList<Alarm> alarms) {
         ArrayList<String> data = new ArrayList<>();
         String[] alarmArray;
         int index = 0;
@@ -78,7 +61,7 @@ public class AlarmManager {
         }
     }
 
-    private Alarm createAlarmClock(String[] alarmArray) {
+    private static Alarm createAlarmClock(String[] alarmArray) {
         int id = Integer.valueOf(alarmArray[0]);
         String message = alarmArray[1];
         int year = Integer.valueOf(alarmArray[2]);
@@ -98,7 +81,7 @@ public class AlarmManager {
         return new Alarm(id, message, c, latitude, longitude);
     }
 
-    private Alarm createTimer(String[] alarmArray) {
+    private static Alarm createTimer(String[] alarmArray) {
         Alarm timer;
         int id = Integer.valueOf(alarmArray[0]);
         String message = alarmArray[1];
@@ -112,52 +95,5 @@ public class AlarmManager {
         c.set(Calendar.MINUTE, minute);
 
         return new Alarm(id, message, c, latitude, longitude);
-    }
-
-    public void saveAlarms(Alarm[] alarms) {
-        PrintWriter output = null;
-        String outputString;
-        String message;
-        try {
-            output = new PrintWriter(new File("alarms.csv"));
-        } catch (IOException e) {
-            Log.d("mmc", "Could not Open Output File");
-        }
-        for (int i = 0; i < alarms.length; i++) {
-            outputString = "";
-            outputString += alarms[i].getID() + ",";
-
-            message = alarms[i].getMessage();
-            if (message.contains("\"")) {
-                message = message.replaceAll("\"", "\"\"");
-            }
-            if (message.contains(",")) {
-                message = "\"" + message + "\"";
-            }
-            outputString += message + ",";
-
-            switch (alarms[i].getID()) {
-                case 1:
-                    outputString = alarms[i].getCalendar().get(Calendar.YEAR) + ","
-                            + alarms[i].getCalendar().get(Calendar.MONTH) + ","
-                            + alarms[i].getCalendar().get(Calendar.DATE) + ","
-                            + alarms[i].getCalendar().get(Calendar.HOUR) + ","
-                            + alarms[i].getCalendar().get(Calendar.MINUTE) + ","
-                            + alarms[i].getCalendar().getTimeZone().getID() + ","
-                            + alarms[i].getLatitude() + ","
-                            + alarms[i].getLongitude();
-                case 2:
-                case 3:
-                    outputString = alarms[i].getCalendar().get(Calendar.HOUR) + ","
-                            + alarms[i].getCalendar().get(Calendar.MINUTE) + ","
-                            + alarms[i].getLatitude() + ","
-                            + alarms[i].getLongitude();
-                    break;
-                default:
-                    break;
-            }
-            output.println(outputString);
-        }
-        output.close();
     }
 }
