@@ -6,15 +6,21 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 /**
  * Created by Abe on 11/8/2016.
@@ -26,6 +32,8 @@ public class CreateAlarmActivity extends AppCompatActivity implements View.OnCli
     private Button setDateButton, setTimeButton, setAlarmButton;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private int aYear, aMonth, aDay, aHour, aMinute;
+    private Spinner timeZoneSpinner;
+    private CheckBox timeZoneCheckBox;
     TextView timeText, dateText;
     EditText alarmMessage;
     Switch repeatSwitch;
@@ -45,6 +53,13 @@ public class CreateAlarmActivity extends AppCompatActivity implements View.OnCli
         dateText = (TextView)findViewById(R.id.dateText);
         alarmMessage = (EditText)findViewById(R.id.alarmMessage);
         repeatSwitch = (Switch)findViewById(R.id.repeatSwitch);
+        timeZoneSpinner = (Spinner)findViewById(R.id.timeZoneSpinner);
+        timeZoneCheckBox = (CheckBox)findViewById(R.id.timeZoneCheckBox);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.time_zones, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeZoneSpinner.setAdapter(adapter);
 
         setAlarmButton.setOnClickListener(this);
         setTimeButton.setOnClickListener(this);
@@ -105,16 +120,19 @@ public class CreateAlarmActivity extends AppCompatActivity implements View.OnCli
                 datePickerDialog.show();
                 break;
             case R.id.setAlarmButton:
-                //TODO logic to set an alamr
-                //TODO create a toast for the time the alarm was set
                 c.set(aYear, aMonth, aDay, aHour, aMinute);
+                if(timeZoneCheckBox.isChecked())
+                    c.setTimeZone(TimeZone.getTimeZone("Etc/" + timeZoneSpinner.getSelectedItem().toString()));
                 stringToWrite += "1," + alarmMessage.getText() + "," + c.get(Calendar.YEAR) + "," + c.get(Calendar.MONTH) +
                         "," + c.get(Calendar.DAY_OF_MONTH) + "," + c.get(Calendar.HOUR) + "," + c.get(Calendar.MINUTE) + ", timezone, "
                         + repeatSwitch.isActivated() + ", location"; //TODO timezone & location
                 Toast toast = Toast.makeText(this, "Alarm set for: " +
                         c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + " " + (c.get(Calendar.DAY_OF_MONTH)+1) +
-                        "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.YEAR), Toast.LENGTH_LONG);
+                        "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.YEAR) + "\n in time zone: " + c.getTimeZone().getID(), Toast.LENGTH_LONG);
                 toast.show();
+                boolean repeat = repeatSwitch.isActivated();
+                //TODO logic to get location
+                //TODO logic to set an alarm
                 finish();
                 break;
         }
